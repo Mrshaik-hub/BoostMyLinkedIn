@@ -215,4 +215,33 @@ public class LoginPage {
          e.printStackTrace();
         }
     }
+
+    public void userLoginIntoLinkedIn() {
+        try{
+            logger.info("userLoginIntoLinkedIn started");
+            openUrl();
+            Util.implicitWait(driver);
+                WebElement loginBtn = driver.findElement(By.xpath(Util.getXpath(getClass().getSimpleName(),"signInButton")));
+                loginBtn.click();
+                Thread.sleep(1000);
+
+
+                    WebElement userName = driver.findElement(By.xpath(Util.getXpath(getClass().getSimpleName(),"usernameInput")));
+                    WebElement password = driver.findElement(By.xpath(Util.getXpath(getClass().getSimpleName(),"passwordInput")));
+                    userName.sendKeys(System.getProperty("linkedInGmail"));
+                    password.sendKeys(System.getProperty("linkedInPassword"));
+
+                    WebElement submitBtn = driver.findElement(By.xpath(Util.getXpath(getClass().getSimpleName(),"loginBtn")));
+                    submitBtn.click();
+
+
+
+
+        logger.info("userLoginIntoLinkedIn completed");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
