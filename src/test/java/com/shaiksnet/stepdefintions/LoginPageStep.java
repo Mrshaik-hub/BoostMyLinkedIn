@@ -20,4 +20,9 @@ public class LoginPageStep {
     public void theUserLoginIntoFlowCv() {
         LoginPage.userLoginIntoFlowCv();
     }
+
+    @Given("the user logs into LinkedIn.com")
+    public void theUserLogsIntoLinkedInCom() {
+        LoginPage.userLoginIntoLinkedIn();
+    }
 }
