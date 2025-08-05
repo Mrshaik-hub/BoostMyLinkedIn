@@ -67,4 +67,9 @@ public class AccountDetailsPageStep {
     public void theUserVisitTheGitHubAndLinkedIn() {
         accountDetailsPage.userMakeAVisitInGitAndLinkedIn();
     }
+
+
+    @When("the user search for SDET people")
+    public void theUserSearchForSDETPeople() {
+    }
 }
