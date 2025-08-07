@@ -71,5 +71,22 @@ public class AccountDetailsPageStep {
 
     @When("the user search for SDET people")
     public void theUserSearchForSDETPeople() {
+        accountDetailsPage.theUserSearchForSDETPeople();
+    }
+
+    @And("the user send connect to random people")
+    public void theUserSendConnectToRandomPeople() {
+        accountDetailsPage.theUserSendConnectToRandomPeople();
+
+    }
+
+    @And("the user like random posts")
+    public void theUserLikeRandomPosts() {
+        accountDetailsPage.theUserLikeRandomPosts();
+
+    }
+
+    @Then("the user logged out of LinkedIn.com")
+    public void theUserLoggedOutOfLinkedInCom() {
     }
 }
