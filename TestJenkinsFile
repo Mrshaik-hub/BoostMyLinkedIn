@@ -77,11 +77,11 @@ pipeline {
             }
         }
 
-        stage('Run ApplyMate Script') {
+        stage('Run BoostMyLinkedIn Script') {
             steps {
                 script {
                     try {
-                        echo 'Starting Visa Slot Monitoring Script'
+                        echo 'Starting BoostMyLinkedIn Monitoring Script'
                         if (isUnix()) {
                             sh """
                                 mvn clean install \\
