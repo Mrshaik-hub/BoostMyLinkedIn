@@ -7,6 +7,7 @@ import org.apache.logging.log4j.core.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import io.cucumber.datatable.DataTable;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,6 +22,7 @@ public class AccountDetailsPage {
     public AccountDetailsPage(WebDriver driver) {
         this.driver = driver;
     }
+
     public static String getFixedLengthSkillsString(int targetLength) {
         List<String> allSkills = Arrays.asList(
                 "Java", "Core Java", "Selenium WebDriver", "TestNG", "JUnit", "Cucumber", "REST Assured", "Postman",
@@ -52,8 +54,39 @@ public class AccountDetailsPage {
 
     public static String get245Chars() {
         String skills245 = getFixedLengthSkillsString(245);
-        return skills245 ;
+        return skills245;
     }
+
+    public static String getRandomSreachKey() {
+        List<String> allSkills = Arrays.asList(
+                "Java Developer", "Core Java Expert", "Selenium Automation Engineer", "TestNG Automation",
+                "JUnit Framework", "Cucumber BDD", "REST Assured API Automation", "Postman Collections",
+                "Karate API Framework", "API Automation Tester", "Manual and Automation Testing",
+                "QA SDET", "Agile QA", "Scrum Team QA", "Page Object Model",
+                "BDD Framework", "TDD Approach", "Maven Project", "Gradle Automation",
+                "Jenkins CI/CD", "Git Version Control", "GitHub Actions", "Bitbucket Pipelines",
+                "CI/CD Automation", "DevOps Testing", "Docker with Selenium",
+                "Kubernetes QA Integration", "Linux for Testers", "MySQL for QA",
+                "MongoDB Queries", "Oracle SQL Testing", "Swagger API Docs",
+                "JSON Parsing", "XML Validation", "YAML Config Testing",
+                "STLC Process", "SDLC QA Life Cycle", "JIRA Bug Tracking",
+                "Confluence Documentation", "XPath Selectors", "Playwright Automation",
+                "Cypress E2E Testing", "Appium Mobile Testing", "BrowserStack Integration",
+                "Sauce Labs Execution", "Bug Tracking Tools", "QA Test Strategy",
+                "Test Planning Skills", "Smoke & Regression Testing", "Functional Test Cases",
+                "Cross-Browser Automation", "Test Reporting Tools", "Version Control Systems"
+        );
+
+        Random random = new Random();
+        return allSkills.get(random.nextInt(allSkills.size()));
+    }
+
+    public static String SreachKey() {
+        String randomSkill = getRandomSreachKey();
+        return randomSkill;
+    }
+
+
 
     public  void theUserUpdateNaukriKeywords() {
         try {
@@ -332,10 +365,100 @@ public class AccountDetailsPage {
     }
 
 
+    public void theUserSearchForSDETPeople() {
+        try{
+            logger.info("In theUserSearchForSDETPeople started");
+            String searchKeyword = SreachKey();
+            String searchKeyword2 = SreachKey();
+            String searchKeyword3 = SreachKey();
+            driver.get("https://www.linkedin.com/search/results/people/?keywords="+searchKeyword+"%20"+searchKeyword2+"%20"+searchKeyword3);
+            Thread.sleep(5000);
+
+            logger.info("theUserSearchForSDETPeople completed");
+
+        }catch (Exception e) {
+            logger.error("Failed to search for SDET people", e);
+            Assert.fail("Failed to search for SDET people: " + e.getMessage());
+        }
+    }
+
+    public void theUserSendConnectToRandomPeople() {
+        try{
+            logger.info("In theUserSendConnectToRandomPeople started");
+            int connectionCount = 0;
+            JavascriptExecutor js = (JavascriptExecutor) driver;
 
 
+            while (connectionCount < 3) {
+                List<WebElement> connectButtons = driver.findElements(By.xpath(Util.getXpath(getClass().getSimpleName(),"connectBtn")));
 
+                Collections.shuffle(connectButtons); // Shuffle to randomize the order
 
+                for (WebElement btn : connectButtons) {
+                    try {
+                        if (connectionCount >= 3) break;
 
+                        //js.executeScript("arguments[0].scrollIntoView(true);", btn);
+                        Thread.sleep(2000);
 
+                        // Use this:
+                        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+                        Thread.sleep(2000);
+
+                        // If popup appears
+                        WebElement sendNow = driver.findElement(By.xpath(Util.getXpath(getClass().getSimpleName(),"sendBtn")));
+                        sendNow.click();
+                        connectionCount++;
+                        System.out.println("Connected: " + connectionCount);
+
+                        Thread.sleep(new Random().nextInt(2000) + 3000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Scroll to load more profiles
+                js.executeScript("window.scrollBy(0, 1000)");
+                Thread.sleep(4000);
+            }
+            logger.info("In theUserSendConnectToRandomPeople completed, sent " + connectionCount + " connect requests");
+
+        }catch (Exception e) {
+            logger.error("Failed to send connect requests to random people", e);
+            Assert.fail("Failed to send connect requests to random people: " + e.getMessage());
+        }
+    }
+
+    public void theUserLikeRandomPosts() {
+        try{
+            logger.info("In theUserLikeRandomPosts started");
+
+            WebElement homeButton = driver.findElement(By.xpath(Util.getXpath(getClass().getSimpleName(),"linkedInhomeBtn")));
+            homeButton.click();
+            Thread.sleep(2000);
+            // Wait for the home page to load
+            List<WebElement> likeBtn = driver.findElements(By.xpath(Util.getXpath(getClass().getSimpleName(),"likeBtn")));
+            Collections.shuffle(likeBtn); // Shuffle to randomize the order
+            int likeCount = 0;
+            for (WebElement btn : likeBtn) {
+                try {
+                    if (btn.isDisplayed() && btn.isEnabled())  {
+                        if (likeCount >= 3) break; // Limit to 5 likes
+                        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btn);
+                        Thread.sleep(1000);
+                        btn.click(); // Click the like button
+                        likeCount++;
+                        Thread.sleep(2000); // Wait before next action
+                    }
+                } catch (Exception e) {
+                    logger.warn("Failed to like a post: " + e.getMessage());
+                }
+            }
+         logger.info("In theUserLikeRandomPosts completed, liked " + likeCount + " posts");
+
+        }catch (Exception e) {
+            logger.error("Failed to like random posts", e);
+            Assert.fail("Failed to like random posts: " + e.getMessage());
+        }
+    }
 }
